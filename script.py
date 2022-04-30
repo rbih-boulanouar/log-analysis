@@ -4,6 +4,7 @@ import re
 import logevent
 import time
 from pprint import pprint
+import decoder
 
 #   regular expression for getting event parameters
 
