@@ -1,36 +1,53 @@
+#   import libs
+
 import re
+import logevent
+import time
+from pprint import pprint
 
-class event:
-    # source_ip
-    # request_time
-    # request_method
-    # path
-    # request_length
-    # url
-    # user_agent
-    # parameters
-    def __init__(self,source_ip,request_time,request_method,path,request_length,url,user_agent):
-        self.source_ip=source_ip
-        self.request_time=request_time
-        self.request_method=request_method
-        self.path=path
-        self.request_length=request_length
-        self.url=url
-        self.user_agent=user_agent
-        self.parameters=parameters
-    def __init__(self):
-        pass
+#   regular expression for getting event parameters
 
-    def get_parameters(path):
-        return re.search(url_parameters_pattern, path)
+ip_pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
+pattern=format_pat= re.compile( 
+    r"(?P<host>(?:[\d\.]|[\da-fA-F:])+)\s" 
+    r"(?P<identity>\S*)\s" 
+    r"(?P<user>\S*)\s"
+    r"\[(?P<time>.*?)\]\s"
+    r'"(?P<request>.*?)"\s'
+    r"(?P<status>\d+)\s"
+    r"(?P<bytes>\S*)\s"
+    r'"(?P<referer>.*?)"\s'
+    r'"(?P<user_agent>.*?)"\s*' 
+)
 
-ip_address_pattern="\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b"
-url_parameters_pattern="\?|\&)([^=]+)\=([^&]+"
+#   read log file in real time 
 
-max_date=0
-file = open("apach.log","r" ,encoding="utf-8")
-events = file.readlines()
-for uevent in events:
-    normalized_event=event()
-    normalized_event.source_ip= re.search(ip_address_pattern, event)[0]
+filePath = 'miniapache.log'
+file=open (filePath,"r")
+while 1:
+    where = file.tell()
+    line = file.readline()
+    if not line:
+        time.sleep(1)
+        file.seek(where)
+    else:
+        print ("event: "+line)  #   new line created in log file
 
+        #   create new event object and set parameters
+
+        event = logevent.event()
+        event_parameters=pattern.match(line).groupdict()
+        event.host=event_parameters['host']
+        event.identity=event_parameters['identity']
+        event.user=event_parameters['identity']
+        event.time=event_parameters['time']
+        event.request=event_parameters['request']
+        event.status=event_parameters['status']
+        event.bytes=event_parameters['bytes']
+        event.referer=event_parameters['referer']
+        event.user_agent=event_parameters['user_agent']
+
+        #   print the event object and request parameters
+
+        pprint(vars(event))
+        print(event.get_request_parameters())
