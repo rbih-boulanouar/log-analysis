@@ -13,7 +13,7 @@ class event:
         self.time=time
         self.request=request
         self.status=status
-        self.bytes=bytes
+        self.bytes=r_bytes
         self.referer=referer
         self.user_agent=user_agent
     def __init__(self):
@@ -23,4 +23,5 @@ class event:
 
     def get_request_parameters(self):
         url_parameters_pattern='(?:\?|&|;)([^=]+)=([^&|;]+)'
-        return re.findall(url_parameters_pattern, self.request.split(" ")[1])
+        parameters_tuple= re.findall(url_parameters_pattern, self.request.split(" ")[1])
+        return dict((x, y) for x, y in parameters_tuple)

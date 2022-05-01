@@ -51,4 +51,7 @@ while 1:
         #   print the event object and request parameters
 
         pprint(vars(event))
-        print(event.get_request_parameters())
+        #print(event.get_request_parameters()['test'])
+        print(decoder.decode().isUrlEncoded(event.get_request_parameters()['test']))
+        print(decoder.decode().isBase64(event.get_request_parameters()['test']))
+        print(decoder.decode().isHTMLEntitie(event.get_request_parameters()['test']))
