@@ -38,10 +38,23 @@ class decode:
         except Exception:
             return False
 
-
     #   Decode HTML entities
 
     def  html_entitie(self, coded_string):
         return html.unescape(coded_string)
+
+    #   check if string is unicode
+
+    def isUnicode(self, string):
+        if isinstance(s, unicode):
+            return True
+        else:
+            return False
+    
+    #   decode unicode
+
+    def Unicode(self, string):
+        return string.decode("utf-8")
+
 
     #   we can add any type of encoding we want based on the Web application 
