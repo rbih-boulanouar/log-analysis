@@ -178,7 +178,7 @@ class detection:
         "t|zoom))[\\s\\0]*=");
         regexp = re.compile(str)
         if regexp.search(s):
-            print("hello")
+            print("xss detected")
 
 a=detection()
 a.xss_detector("<script>alert(1)</script>")
