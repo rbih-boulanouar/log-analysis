@@ -40,7 +40,7 @@ while 1:
         event_parameters=pattern.match(line).groupdict()
         event.host=event_parameters['host']
         event.identity=event_parameters['identity']
-        event.user=event_parameters['identity']
+        event.user=event_parameters['user']
         event.time=event_parameters['time']
         event.request=event_parameters['request']
         event.status=event_parameters['status']
@@ -51,7 +51,5 @@ while 1:
         #   print the event object and request parameters
 
         pprint(vars(event))
-        #print(event.get_request_parameters()['test'])
-        print(decoder.decode().isUrlEncoded(event.get_request_parameters()['test']))
-        print(decoder.decode().isBase64(event.get_request_parameters()['test']))
-        print(decoder.decode().isHTMLEntitie(event.get_request_parameters()['test']))
+        print(event.get_request_parameters())
+        
