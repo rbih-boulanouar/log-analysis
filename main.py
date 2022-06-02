@@ -1,25 +1,10 @@
 #   import libs
 
 import re
-import logevent
+import normalization
 import time
 from pprint import pprint
-import decoder
-
-#   regular expression for getting event parameters
-
-ip_pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
-pattern=format_pat= re.compile( 
-    r"(?P<host>(?:[\d\.]|[\da-fA-F:])+)\s" 
-    r"(?P<identity>\S*)\s" 
-    r"(?P<user>\S*)\s"
-    r"\[(?P<time>.*?)\]\s"
-    r'"(?P<request>.*?)"\s'
-    r"(?P<status>\d+)\s"
-    r"(?P<bytes>\S*)\s"
-    r'"(?P<referer>.*?)"\s'
-    r'"(?P<user_agent>.*?)"\s*' 
-)
+import decoding
 
 #   read log file in real time 
 
@@ -36,8 +21,8 @@ while 1:
 
         #   create new event object and set parameters
 
-        event = logevent.event()
-        event_parameters=pattern.match(line).groupdict()
+        event = normalization.event()
+        event_parameters=event.pattern.match(line).groupdict()
         event.host=event_parameters['host']
         event.identity=event_parameters['identity']
         event.user=event_parameters['user']
