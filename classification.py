@@ -1,6 +1,51 @@
 import re
 class detection:
-   
+
+    def ldap_detector(self,s):
+        str=""
+
+        regexp = re.compile(str)
+        if regexp.search(s):
+            return True
+        else:
+            return False
+
+    def crlf_detector(self,s):
+        str=""
+
+        regexp = re.compile(str)
+        if regexp.search(s):
+            return True
+        else:
+            return False
+
+    def command_detector(self,s):
+        str=""
+
+        regexp = re.compile(str)
+        if regexp.search(s):
+            return True
+        else:
+            return False
+
+    def code_detector(self,s):
+        str=""
+
+        regexp = re.compile(str)
+        if regexp.search(s):
+            return True
+        else:
+            return False
+
+    def sqli_detector(self,s):
+        str="('(''|[^'])*')|(;)|(\b(ALTER|CREATE|DELETE|DROP|EXEC(UTE){0,1}|INSERT(INTO){0,1}|MERGE|SELECT|UPDATE|UNION(ALL){0,1})\b)ixg"
+
+        regexp = re.compile(str)
+        if regexp.search(s):
+            return True
+        else:
+            return False
+
     def xss_detector(self,s):
         str = ("<[^\\w<>]*(?:[^<>\""
         "\'\\s]*:)?[^\\w<>]*("
@@ -175,10 +220,13 @@ class detection:
         ":press|down|up)|(?:A"
         "ppComman|Loa)d|no(?:"
         "update|match)|Reques"
-        "t|zoom))[\\s\\0]*=");
+        "t|zoom))[\\s\\0]*=")
         regexp = re.compile(str)
         if regexp.search(s):
-            print("xss detected")
+            return True
+        else:
+            return False
 
 a=detection()
-a.xss_detector("<script>alert(1)</script>")
+print(a.xss_detector("ABC<div style=\"x:expression\x5C(javascript:alert(1)\">DEF"))
+print(a.sqli_detector("AND 2947=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(500000000/2))))"))

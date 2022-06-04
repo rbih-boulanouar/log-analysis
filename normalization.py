@@ -9,7 +9,7 @@ class event:
 
 #   regular expression for getting event parameters
 
-    pattern=format_pat= re.compile( 
+    pattern= re.compile( 
     r"(?P<host>(?:[\d\.]|[\da-fA-F:])+)\s" 
     r"(?P<identity>\S*)\s" 
     r"(?P<user>\S*)\s"
