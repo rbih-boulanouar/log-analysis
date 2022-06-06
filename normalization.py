@@ -9,16 +9,17 @@ class event:
 
 #   regular expression for getting event parameters
 
-    pattern= re.compile( 
-    r"(?P<host>(?:[\d\.]|[\da-fA-F:])+)\s" 
-    r"(?P<identity>\S*)\s" 
-    r"(?P<user>\S*)\s"
-    r"\[(?P<time>.*?)\]\s"
-    r'"(?P<request>.*?)"\s'
-    r"(?P<status>\d+)\s"
-    r"(?P<bytes>\S*)\s"
-    r'"(?P<referer>.*?)"\s'
-    r'"(?P<user_agent>.*?)"\s*' 
+    def reg(self):
+        return re.compile( 
+r"(?P<host>(?:[\d\.]|[\da-fA-F:])+)\s" 
+r"(?P<identity>\S*)\s" 
+r"(?P<user>\S*)\s"
+r"\[(?P<time>.*?)\]\s"
+r'"(?P<request>.*?)"\s'
+r"(?P<status>\d+)\s"
+r"(?P<bytes>\S*)\s"
+r'"(?P<referer>.*?)"\s'
+r'"(?P<user_agent>.*?)"\s*' 
 )
 
 #   Event attributes 

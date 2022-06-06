@@ -1,6 +1,6 @@
 import re
 class detection:
-
+    result={"data":[]}
     def ldap_detector(self,s):
         str=""
 
@@ -226,6 +226,14 @@ class detection:
             return True
         else:
             return False
+    def classifier(self,json):
+        for i in json:
+            if self.xss_detector(json[i]):
+                self.result["data"].append({i:json[i],"attacktype":"XSS"})
+            elif self.sqli_detector(json[i]):
+                self.result["data"].append({i:json[i],"attacktype":"sqli"})
+        return self.result
+
 
 a=detection()
 print(a.xss_detector("ABC<div style=\"x:expression\x5C(javascript:alert(1)\">DEF"))

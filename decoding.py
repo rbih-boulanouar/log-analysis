@@ -1,6 +1,7 @@
 import base64
 import urllib.parse
 import html
+import ftfy
 
 class decode:
 
@@ -8,7 +9,7 @@ class decode:
 
     def isBase64(self, string):
         try:
-            return base64.b64encode(base64.b64decode(string)) == string
+            return base64.b64encode(base64.b64decode(string)).decode("utf-8") == string
         except Exception:
             return False
 
@@ -40,13 +41,13 @@ class decode:
 
     #   Decode HTML entities
 
-    def  html_entitie(self, coded_string):
+    def html_entitie(self, coded_string):
         return html.unescape(coded_string)
 
     #   check if string is unicode
 
     def isUnicode(self, string):
-        if isinstance(s, unicode):
+        if string.isascii():
             return True
         else:
             return False
@@ -54,7 +55,30 @@ class decode:
     #   decode unicode
 
     def Unicode(self, string):
-        return string.decode("utf-8")
 
+        return ftfy.fix_text(string)
+
+    def autodecoder(self, string):
+        string=self.url(string)
+        if self.isBase64(string):
+
+            return self.Base64(string).decode("utf-8")
+        
+        elif self.isUnicode(string):
+            
+            return self.Unicode(string)
+        
+        elif self.isHTMLEntitie(string):
+            
+            return str(self.html_entitie(string))
+
+        else:
+            return string
+
+    def decodejson(self, json):
+            decoded_parameters={}
+            for i in json:
+                decoded_parameters[self.autodecoder(i)]=self.autodecoder(json[i])
+            return decoded_parameters
 
     #   we can add any type of encoding we want based on the Web application 
