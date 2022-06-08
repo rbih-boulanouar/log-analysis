@@ -43,3 +43,11 @@ r'"(?P<user_agent>.*?)"\s*'
         url_parameters_pattern='(?:\?|&|;)([^=]+)=([^&|;]+)'
         parameters_tuple= re.findall(url_parameters_pattern, self.request.split(" ")[1])
         return dict((x, y) for x, y in parameters_tuple)
+    def skip(self,request):
+        extentions=[".jpeg",".jpg",".png",".css",".gif",".js",".json",]
+        for i in extentions:
+            if request.endswith(i):
+                return True
+            else:
+                return False
+

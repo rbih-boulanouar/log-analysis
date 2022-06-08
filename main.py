@@ -30,11 +30,12 @@ while 1:
         file.seek(where)
     else:
         print ("event: "+line)  #   new line created in log file
-
-        #   create new event object and set parameters
-
         event = normalization.event()
         event_parameters=event.reg().match(line).groupdict()
+        if normalization.event().skip(event_parameters['request']):
+            continue
+        #   create new event object and set parameters
+        
         event.host=event_parameters['host']
         event.identity=event_parameters['identity']
         event.user=event_parameters['user']
@@ -56,7 +57,7 @@ while 1:
         for i in aa['data']:
             i.setdefault("host",event.host)
             i.setdefault("time",event.time)
-            i.setdefault("endpoint",event.referer)
+            i.setdefault("endpoint",event.request)
 
         print(aa)
         print("-------------------------------------------------------------------")
