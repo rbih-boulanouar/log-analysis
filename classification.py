@@ -2,6 +2,18 @@ import re
 import decoding
 class detection:
     result={"data":[]}
+    def lfi_detector(self,s):
+        str=r"'../|/..|..\\|\\..'gmi"
+        regexp = re.compile(str)
+        if regexp.search(s):
+            return True
+        else:
+            with open("payloads/lfi.txt", "r", encoding="utf-8") as file:
+                for i in file.readlines():
+                    if s == decoding.decode().autodecoder(i.strip()):
+                        return True
+                    else:
+                        return False
     def ldap_detector(self,s):
         str=""
 
@@ -40,7 +52,7 @@ class detection:
                         return False
             
     def code_detector(self,s):
-        str="[|]|\{|\}|\(\)|\;|\?|\.|\,|\\|\^|\$|\'|abstrac|and|as|break|callable|case|catch|class|clone|const|continue|declare|default|do|echo|else|elseif|empty|enddeclare|endfor|endforeach|endif|endswitch|extends|final|finally|fn|for|foreach|function|global|goto</td>|if|implements|include|include_once|instanceof|insteadof|interface|isset|list|namespace|new|or|print|private|protected|public|require|require_once|return|static|switch|throw|trait|try|unset|use|var|while|xor|yield|yield from"
+        str="'[|]|\{|\}|\(\)|\);|\^|\$|abstrac|callable|catch|class|declare|default|echo|else|elseif|foreach|function|goto|if\(|implements|include_once|instanceof|insteadof|isset|namespace|require|require_once|return|throw|trait|unset|xor|yield|yield from'gmi"
 
         regexp = re.compile(str)
         if regexp.search(s):
@@ -253,10 +265,13 @@ class detection:
                 self.result["data"].append({i:json[i],"attacktype":"XSS"})
             elif self.sqli_detector(json[i]):
                 self.result["data"].append({i:json[i],"attacktype":"sqli"})
+            elif self.lfi_detector(json[i]):
+                self.result["data"].append({i:json[i],"attacktype":"lfi injaction"})
             elif self.command_detector(json[i]):
                 self.result["data"].append({i:json[i],"attacktype":"command injection"})
             elif self.code_detector(json[i]):
                 self.result["data"].append({i:json[i],"attacktype":"code injection"})
             elif self.crlf_detector(json[i]):
                 self.result["data"].append({i:json[i],"attacktype":"crlf injaction"})
+            
         return self.result

@@ -60,19 +60,21 @@ class decode:
 
     def autodecoder(self, string):
         string=self.url(string)
-        if self.isBase64(string):
+        try:
+            if self.isBase64(str(string)):
 
-            return self.Base64(string).decode("utf-8")
-        
-        elif self.isUnicode(string):
+                return self.Base64(string).decode("utf-8")
             
-            return self.Unicode(string)
-        
-        elif self.isHTMLEntitie(string):
+            elif self.isUnicode(string):
+                
+                return self.Unicode(string)
             
-            return str(self.html_entitie(string))
-
-        else:
+            elif self.isHTMLEntitie(string):
+                
+                return str(self.html_entitie(string))
+            else:
+                return string
+        except:
             return string
 
     def decodejson(self, json):

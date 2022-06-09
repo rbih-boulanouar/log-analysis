@@ -20,7 +20,7 @@ r"(?P<bytes>\S*)\s"
 r'"(?P<referer>.*?)"\s'
 r'"(?P<user_agent>.*?)"\s*' 
 )
-filePath = 'miniapache.log'
+filePath = 'C:\\xampp\\apache\\logs\\access.log'
 file=open (filePath,"r")
 while 1:
     where = file.tell()
@@ -57,7 +57,7 @@ while 1:
         for i in aa['data']:
             i.setdefault("host",event.host)
             i.setdefault("time",event.time)
-            i.setdefault("endpoint",event.request)
+            i.setdefault("request",event.request)
 
         print(aa)
         print("-------------------------------------------------------------------")

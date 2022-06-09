@@ -1,1 +1,1 @@
-{"data": []}
+{"data": [{"firstname": "../../etc/passwd", "attacktype": "lfi injaction", "host": "::1", "time": "08/Jun/2022:06:20:28 +0100", "request": "GET /bwapp/bWAPP/xss_get.php?firstname=..%2F..%2Fetc%2Fpasswd&lastname=..%2F..%2Fetc%2Fpasswd&form=submit HTTP/1.1"}, {"lastname": "../../etc/passwd", "attacktype": "lfi injaction", "host": "::1", "time": "08/Jun/2022:06:20:28 +0100", "request": "GET /bwapp/bWAPP/xss_get.php?firstname=..%2F..%2Fetc%2Fpasswd&lastname=..%2F..%2Fetc%2Fpasswd&form=submit HTTP/1.1"}]}
