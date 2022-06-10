@@ -6,7 +6,7 @@ import re
 #   Event Class with all attributes 
 
 class event:
-
+    i=0
 #   regular expression for getting event parameters
 
     def reg(self):
@@ -41,8 +41,11 @@ r'"(?P<user_agent>.*?)"\s*'
 
     def get_request_parameters(self):
         url_parameters_pattern='(?:\?|&|;)([^=]+)=([^&|;]+)'
-        parameters_tuple= re.findall(url_parameters_pattern, self.request.split(" ")[1])
-        return dict((x, y) for x, y in parameters_tuple)
+        try:
+            parameters_tuple= re.findall(url_parameters_pattern, self.request.split(" ")[1])
+            return dict((x, y) for x, y in parameters_tuple)
+        except:
+            return {}
     def skip(self,request):
         extentions=[".jpeg",".jpg",".png",".css",".gif",".js",".json",]
         for i in extentions:

@@ -22,7 +22,10 @@ r'"(?P<user_agent>.*?)"\s*'
 )
 filePath = 'C:\\xampp\\apache\\logs\\access.log'
 file=open (filePath,"r")
+co=0
+errors=0
 while 1:
+    
     where = file.tell()
     line = file.readline().strip()
     if not line:
@@ -45,7 +48,8 @@ while 1:
         event.bytes=event_parameters['bytes']
         event.referer=event_parameters['referer']
         event.user_agent=event_parameters['user_agent']
-
+        if str(event.status).startswith("4") or str(event.status).startswith("5"):
+            errors=errors+1
         #   print the event object and request parameters
 
         #pprint(vars(event))
@@ -58,10 +62,14 @@ while 1:
             i.setdefault("host",event.host)
             i.setdefault("time",event.time)
             i.setdefault("request",event.request)
-
+        aa['counter']=co
+        aa['errors']=errors
+        co=co+1
         print(aa)
+        
         print("-------------------------------------------------------------------")
         #print(decoding.decode().autodecoder("<A HREF=\"http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D\">XSS</A>"))
-        fi= open("result.json", "w")
+        fi= open("C:\\xampp\\htdocs\\bwapp\\bWAPP\website\\result.json", "w")
         json.dump(aa, fi)
         fi.close()
+        

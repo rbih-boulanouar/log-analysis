@@ -264,14 +264,14 @@ class detection:
             if self.xss_detector(json[i]):
                 self.result["data"].append({i:json[i],"attacktype":"XSS"})
             elif self.sqli_detector(json[i]):
-                self.result["data"].append({i:json[i],"attacktype":"sqli"})
+                self.result["data"].append({i:json[i],"attacktype":"SQL INJECTION"})
             elif self.lfi_detector(json[i]):
-                self.result["data"].append({i:json[i],"attacktype":"lfi injaction"})
+                self.result["data"].append({i:json[i],"attacktype":"LFI INJECTION"})
             elif self.command_detector(json[i]):
-                self.result["data"].append({i:json[i],"attacktype":"command injection"})
+                self.result["data"].append({i:json[i],"attacktype":"COMMAND INJECTION"})
             elif self.code_detector(json[i]):
-                self.result["data"].append({i:json[i],"attacktype":"code injection"})
+                self.result["data"].append({i:json[i],"attacktype":"CODE INJECTION"})
             elif self.crlf_detector(json[i]):
-                self.result["data"].append({i:json[i],"attacktype":"crlf injaction"})
+                self.result["data"].append({i:json[i],"attacktype":"CRLF INJECTION"})
             
         return self.result
