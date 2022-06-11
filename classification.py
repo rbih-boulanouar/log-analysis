@@ -3,7 +3,7 @@ import decoding
 class detection:
     result={"data":[]}
     def lfi_detector(self,s):
-        str=r"'../|/..|..\\|\\..'gmi"
+        str=r"'../|/..|..'gmi"
         regexp = re.compile(str)
         if regexp.search(s):
             return True
@@ -24,7 +24,7 @@ class detection:
             return False
 
     def crlf_detector(self,s):
-        str="\\r|\\n\"gmi\""
+        str='\\\\r|\\\\n|"gmi"'
 
         regexp = re.compile(str)
         if regexp.search(s):

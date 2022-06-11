@@ -9,17 +9,7 @@ import classification
 import json
 
 #   read log file in real time 
-pattern=format_pat= re.compile( 
-r"(?P<host>(?:[\d\.]|[\da-fA-F:])+)\s" 
-r"(?P<identity>\S*)\s" 
-r"(?P<user>\S*)\s"
-r"\[(?P<time>.*?)\]\s"
-r'"(?P<request>.*?)"\s'
-r"(?P<status>\d+)\s"
-r"(?P<bytes>\S*)\s"
-r'"(?P<referer>.*?)"\s'
-r'"(?P<user_agent>.*?)"\s*' 
-)
+
 filePath = 'C:\\xampp\\apache\\logs\\access.log'
 file=open (filePath,"r")
 co=0
@@ -32,7 +22,7 @@ while 1:
         time.sleep(1)
         file.seek(where)
     else:
-        print ("event: "+line)  #   new line created in log file
+        #print ("event: "+line)  #   new line created in log file
         event = normalization.event()
         event_parameters=event.reg().match(line).groupdict()
         if normalization.event().skip(event_parameters['request']):
@@ -61,7 +51,7 @@ while 1:
         for i in aa['data']:
             i.setdefault("host",event.host)
             i.setdefault("time",event.time)
-            i.setdefault("request",event.request)
+            #i.setdefault("request",event.request)
         aa['counter']=co
         aa['errors']=errors
         co=co+1
@@ -71,5 +61,5 @@ while 1:
         #print(decoding.decode().autodecoder("<A HREF=\"http://%77%77%77%2E%67%6F%6F%67%6C%65%2E%63%6F%6D\">XSS</A>"))
         fi= open("C:\\xampp\\htdocs\\bwapp\\bWAPP\website\\result.json", "w")
         json.dump(aa, fi)
-        fi.close()
+        #fi.close()
         
