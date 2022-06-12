@@ -3,79 +3,79 @@ import decoding
 class detection:
     result={"data":[]}
     def lfi_detector(self,s):
-        str=r"'../|/..|..'gmi"
-        regexp = re.compile(str)
+        strn="'\.\./|/\..|..\\|\\..'gmi"
+        regexp = re.compile(strn)
         if regexp.search(s):
             return True
         else:
             with open("payloads/lfi.txt", "r", encoding="utf-8") as file:
                 for i in file.readlines():
-                    if s == decoding.decode().autodecoder(i.strip()):
+                    if str(s.replace("+", " ")) == str(i.strip()):
                         return True
+                        
                     else:
-                        return False
-    def ldap_detector(self,s):
-        str=""
-
-        regexp = re.compile(str)
-        if regexp.search(s):
-            return True
-        else:
-            return False
+                        continue
+                return False
 
     def crlf_detector(self,s):
-        str='\\\\r|\\\\n|"gmi"'
+        strn='\\\\r|\\\\n|"gmi"'
 
-        regexp = re.compile(str)
+        regexp = re.compile(strn)
         if regexp.search(s):
             return True
         else:
-            with open("payloads/CRLF injection.txt", "r", encoding="utf-8") as file:
+            with open("payloads\CRLF injection.txt", "r", encoding="utf-8") as file:
                 for i in file.readlines():
-                    if s == decoding.decode().autodecoder(i.strip()) :
+                    if str(s.replace("+", " ")) == str(i.strip()):
                         return True
+                        
                     else:
-                        return False
+                        continue
+                return False
 
     def command_detector(self,s):
-        str="'\&|\||\`|\$()|\/bin|chmod|ls|chown|grep|alias|pwd|cd|sudo|rm|mv|mkdir|touch|;|\./|htop|ps|apt|pacman|yum|kill|wget|exec|/usr|c:\\|curl'gmi"
+        strn="'\&|\||\`|\$()|\/bin|chmod|ls|chown|grep|alias|pwd|cd|sudo|rm|mv|mkdir|touch|;|\./|htop|ps|apt|pacman|yum|kill|wget|exec|/usr|c:\\|curl'gmi"
 
-        regexp = re.compile(str)
+        regexp = re.compile(strn)
         if regexp.search(s):
             return True
         else:
             with open("payloads/command injection.txt", "r", encoding="utf-8") as file:
                 for i in file.readlines():
-                    if s == decoding.decode().autodecoder(i.strip()):
+                    if str(s.replace("+", " ")) == str(i.strip()):
                         return True
+                        
                     else:
-                        return False
+                        continue
+                return False
             
     def code_detector(self,s):
-        str="'[|]|\{|\}|\(\)|\);|\^|\$|abstrac|callable|catch|class|declare|default|echo|else|elseif|foreach|function|goto|if\(|implements|include_once|instanceof|insteadof|isset|namespace|require|require_once|return|throw|trait|unset|xor|yield|yield from'gmi"
+        strn="'[|]|\{|\}|\(\)|\);|\^|\$|abstrac|callable|catch|class|declare|default|echo|else|elseif|foreach|function|goto|if\(|implements|include_once|instanceof|insteadof|isset|namespace|require|require_once|return|throw|trait|unset|xor|yield|yield from'gmi"
 
-        regexp = re.compile(str)
+        regexp = re.compile(strn)
         if regexp.search(s):
             return True
         else:
             return False
 
     def sqli_detector(self,s):
-        str="('(''|[^'])*')|(;)|(\b(ALTER|CREATE|DELETE|DROP|EXEC(UTE){0,1}|INSERT(INTO){0,1}|MERGE|SELECT|UPDATE|UNION(ALL){0,1})\b)ixg"
+        strn="'('(''|[^'])*')|(;)|(\b(ALTER|CREATE|DELETE|DROP|EXEC(UTE){0,1}|INSERT(INTO){0,1}|MERGE|SELECT|UPDATE|UNION(ALL){0,1})\b)'gmi"
 
-        regexp = re.compile(str)
+        regexp = re.compile(strn)
         if regexp.search(s):
             return True
         else:
             with open("payloads\sql injection\detect\Generic_ErrorBased.txt", "r", encoding="utf-8") as file:
                 for i in file.readlines():
-                    if s == decoding.decode().autodecoder(i.strip()):
+                    if str(s.replace("+", " ").replace(" ", "")) == str(i.strip().replace(" ", "")):
                         return True
+                        
                     else:
-                        return False
+                        continue
+                return False
 
     def xss_detector(self,s):
-        str = ("<[^\\w<>]*(?:[^<>\""
+        strn = ("<[^\\w<>]*(?:[^<>\""
         "\'\\s]*:)?[^\\w<>]*("
         "?:\\W*s\\W*c\\W*r\\W"
         "*i\\W*p\\W*t|\\W*f\\"
@@ -249,16 +249,18 @@ class detection:
         "ppComman|Loa)d|no(?:"
         "update|match)|Reques"
         "t|zoom))[\\s\\0]*=")
-        regexp = re.compile(str)
+        regexp = re.compile(strn)
         if regexp.search(s):
             return True
         else:
             with open("payloads/xss.txt", "r", encoding="utf-8") as file:
                 for i in file.readlines():
-                    if s == decoding.decode().autodecoder(i.strip()):
+                    if str(s.replace("+", " ")) == str(i.strip()):
                         return True
+                        
                     else:
-                        return False
+                        continue
+                return False
     def classifier(self,json):
         for i in json:
             if self.xss_detector(json[i]):

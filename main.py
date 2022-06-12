@@ -24,7 +24,7 @@ while 1:
     else:
         #print ("event: "+line)  #   new line created in log file
         event = normalization.event()
-        event_parameters=event.reg().match(line).groupdict()
+        event_parameters=event.get_attributes().match(line).groupdict()
         if normalization.event().skip(event_parameters['request']):
             continue
         #   create new event object and set parameters

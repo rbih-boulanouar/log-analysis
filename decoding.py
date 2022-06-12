@@ -63,19 +63,19 @@ class decode:
         try:
             if self.isBase64(str(string)):
 
-                return self.Base64(string).decode("utf-8")
+                return str(self.Base64(string).decode("utf-8"))
             
             elif self.isUnicode(string):
                 
-                return self.Unicode(string)
+                return str(self.Unicode(string))
             
             elif self.isHTMLEntitie(string):
                 
                 return str(self.html_entitie(string))
             else:
-                return string
+                return str(string)
         except:
-            return string
+            return str(string)
 
     def decodejson(self, json):
             decoded_parameters={}
