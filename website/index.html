@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LOG</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+		<script>
+		
+		
+		let mcounter=0;
+	    var xss=0;
+	    let sqli=0;
+	    let lfi=0;
+	    let codei=0;
+	    let commandi=0;
+	    let crlf=0;
+		var j={'SQL INJECTION':'https://portswigger.net/web-security/sql-injection','XSS':'https://portswigger.net/web-security/cross-site-scripting','LFI INJECTION':'https://portswigger.net/web-security/file-path-traversal','COMMAND INJECTION':'https://portswigger.net/web-security/os-command-injection','CODE INJECTION':'https://www.contrastsecurity.com/glossary/code-injection','CRLF INJECTION':'https://www.veracode.com/security/crlf-injection'}
+		
+		function encodeHTML(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+}
+
+    $(function() {
+
+
+   var people = [];
+   
+
+   $.getJSON('result.json', function(data) {
+   
+       $.each(data.data, function(i, f) {
+          var tblRow = "<tr>" + "<td>" + Object.keys(f)[0]+ "</td>" +
+           "<td>" + encodeHTML(f[Object.keys(f)[0]])+ "</td>" + "<td>" + f.host + "</td>" + "<td>" + f.time + "</td>" +"<td> <span class='attack type'><a id='link' href="+ j[f.attacktype] +" target='_blank' >" + f.attacktype +"</a></span> </td>"+"</tr>"
+           $(tblRow).appendTo("#userdata tbody");
+		   mcounter++;
+		   switch (f.attacktype) {
+			  case "XSS":
+				xss++;
+				break;
+			  case "SQL INJECTION":
+				sqli++;
+				break;
+			  case "LFI INJECTION":
+				 lfi++;
+				break;
+			  case "COMMAND INJECTION":
+				commandi++;
+				break;
+			  case "CODE INJECTION":
+				codei++;
+				break;
+			  case "CRLF INJECTION":
+				crlf++;
+				break;
+			 
+			}
+		   
+			
+		   
+     });
+		document.getElementById("all").innerText = data.counter ;
+		document.getElementById("c").innerText = mcounter ;
+		document.getElementById("safe").innerText = data.counter - mcounter ;
+		document.getElementById("errors").innerText =data.errors;
+		
+		
+		
+		const ctx = document.getElementById('myChart').getContext('2d');
+const test = document.getElementById('test').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['XSS', 'SQLI', 'Command Injection','Code Injection','CRLF Injection','LDAP Injection'],
+        datasets: [{
+            label: 'attempts of attacks',
+            data: [xss, sqli, commandi,codei,crlf,lfi],
+            backgroundColor: [
+                'rgba(255, 99, 132,1)',
+                'rgba(54, 162, 235,1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+const myChatert = new Chart(test , {
+    type: 'bar',
+    data: {
+        labels: ['XSS', 'SQLI', 'Command Injection','Code Injection','CRLF Injection','LFI Injection'],
+        datasets: [{
+            label: 'attempts of attacks',
+            data: [xss, sqli, commandi,codei,crlf,lfi],
+            backgroundColor: [
+                'rgba(255, 99, 132,1)',
+                'rgba(54, 162, 235,1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            
+        }]
+    },
+    options: 
+    {
+        responsive: true
+    
+    }
+});
+		
+		
+		
+   });
+
+
+});
+
+	
+</script>
+		
+    </head>
+    <body>	
+
+        <div class="container">
+		
+		
+            <div class="navigation">
+			
+                <ul><li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="bug-outline"></ion-icon></span>
+                        <span class="title">Log Analyzer</span>
+                    </a>    
+                </li>
+                    <li>
+                        <a href="index.html">
+                            <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                            <span class="title">Home</span>
+                        </a>    
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon"><ion-icon name="warning-outline"></ion-icon></span>
+                            <span class="title">Reports</span>
+                        </a>    
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon"><ion-icon name="information-circle-outline"></ion-icon></span>
+                            <span class="title">Help</span>
+                        </a>    
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon"><ion-icon name="people-outline"></ion-icon></span>
+                            <span class="title">About us</span>
+                        </a>    
+                    </li>
+                </ul>
+            </div>
+            <!----reports----->
+            <div class="main">
+                <div class="topbar">
+                    <div class="toggle">
+                        <ion-icon name="menu-outline"></ion-icon>
+                    </div>
+                    <div class="search">
+                        <label>
+                            <input type="text" placeholder="Search here">
+                            <ion-icon name="search-outline"></ion-icon>
+                        </label>
+                    </div>
+                    
+                </div>
+                <div class="cardBox">
+                    <div class="card">
+                        <div>
+                            <div id="all" class="numbers">
+                                
+    
+                            </div>
+                            <div class="cardName">
+                                All Events
+    
+                            </div>  
+                        </div>
+                        <div class="iconbx">
+                            <ion-icon name="code-working-outline"></ion-icon>
+    
+                        </div>
+    
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div id="errors" class="numbers">
+                                
+    
+                            </div>
+                            <div class="cardName">
+                                 Server Errors
+    
+                            </div>  
+                        </div>
+                        <div class="iconbx">
+                            <ion-icon name="code-working-outline"></ion-icon>
+    
+                        </div>
+    
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div id="c" class="numbers">
+                                200
+    
+                            </div>
+                            <div class="cardName">
+                                malicious Events
+    
+                            </div>  
+                        </div>
+                        <div class="iconbx">
+                            <ion-icon name="code-working-outline"></ion-icon>
+    
+                        </div>
+    
+                    </div>
+                    <div class="card">
+                        <div>
+                            <div id="safe" class="numbers">
+                                300
+    
+                            </div>
+                            <div class="cardName">
+                                safe Events
+    
+                            </div>  
+                        </div>
+                        <div class="iconbx">
+                            <ion-icon name="code-working-outline"></ion-icon>
+    
+                        </div>
+    
+                    </div>
+
+                </div>
+                <div class="graphbox">
+                    <div class="box">
+                        <canvas id="myChart"></canvas>
+
+                    </div>
+                    <div class="box">
+                        <canvas id="test"></canvas>
+                    </div>
+
+                </div>
+                <div class="details">
+                    <div class="recentOrder">
+                        <div class="cardHeader">
+                            <h2>
+                                Recent Events
+                            </h2>
+                            <a onclick="sortTable(3)" class="btn">SORT BY TIME</a>
+                            
+
+                        </div>
+                        <table id= "userdata">
+                            <thead>
+                                <tr>
+                                    <td onclick="sortTable(0)">PARAMETER</td>
+                                    <td onclick="sortTable(1)">PAYLOAD</td>
+                                    <td onclick="sortTable(2)">IP ADDRESS</td>
+                                    <td onclick="sortTable(3)">TIME</td>
+									<td onclick="sortTable(4)">ATTACK TYPE</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    
+
+                </div>
+                
+
+
+            </div>
+        </div> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+       
+			
+		<script>
+		
+function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("userdata");
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc";
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++;
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
+		
+		
+		
+        <script>
+            //menu bar
+            let toggle = document.querySelector('.toggle');
+            let navigation = document.querySelector('.navigation');
+            let main = document.querySelector('.main');
+
+            toggle.onclick = function(){
+                navigation.classList.toggle('active');
+                main.classList.toggle('active');
+            } 
+            //add hovered class
+            let list = document.querySelectorAll('.navigation li')
+            function activeLink(){
+                list.forEach((item) => 
+                item.classList.remove('hovered'));
+                this.classList.add('hovered');
+            }
+            list.forEach((item) => 
+            item.addEventListener('mouseover',activeLink));
+        </script>
+        
+    </body>
+</html>
